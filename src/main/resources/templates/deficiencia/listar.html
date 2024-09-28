@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/layout :: layout}">
+    <body th:fragment="content">
+        <div class="card mt-2">
+            <div
+                class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title" style="color: rgb(118, 118, 118);"><i
+                        class="fa-solid fa-list"></i> Listagem de Deficiências</h5>
+            </div>
+            <div class="card-body">
+                <div
+                    class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-start mb-3">
+                        <a class="btn btn-success me-2"
+                            href="/deficiencia/create">
+                            <i class="fa-solid fa-plus"></i> Adicionar
+                        </a>
+                        <a class="btn btn-warning me-2"
+                            href="/deficiencia?display=false">
+                            <i class="fa-solid fa-trash"></i> Excluidos
+                        </a>
+                        <a class="btn btn-info" href="/deficiencia">
+                            <i class="fa-solid fa-users"></i> Ativos
+                        </a>
+                    </div>
+                </div>
+                <table id="tabela" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Ativo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="deficiencia : ${deficiencias}">
+                            <td th:text="${deficiencia.id}"></td>
+                            <td th:text="${deficiencia.nome}"></td>
+                            <td th:text="${deficiencia.categoria.nome}"></td>
+                            <td
+                                th:text="${deficiencia.ativo ? 'Sim' : 'Não'}"></td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-light"
+                                        th:href="@{/deficiencia/update/{id}(id=${deficiencia.id})}"><i
+                                            class="fa-solid fa-pen-ruler"></i>
+                                        Alterar</a>
+                                    <a class="btn btn-light"
+                                        th:href="@{/deficiencia/visualizar/{id}(id=${deficiencia.id})}"><i
+                                            class="fa-solid fa-magnifying-glass"></i>
+                                        Visualizar</a>
+                                    <div th:if="${deficiencia.ativo}">
+                                        <a class="btn btn-light"
+                                            th:href="@{/deficiencia/remover/{id}(id=${deficiencia.id})}"><i
+                                                class="fa-solid fa-trash"></i>
+                                            Remover</a>
+                                    </div>
+                                    <div th:if="${not deficiencia.ativo}">
+                                        <a class="btn btn-light"
+                                            th:href="@{/deficiencia/remover/{id}(id=${deficiencia.id})}"><i
+                                                class="fa-solid fa-reply"></i>
+                                            Recuperar</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script th:src="@{/js/traducao-datatables-ptbr.js}"></script>
+        <script type="text/javascript">
+            $(document).ready(function (){
+                $("#tabela").DataTable({
+                    language: datatable_pt_br
+                });
+            });
+        </script>
+    </body>
+</html>
